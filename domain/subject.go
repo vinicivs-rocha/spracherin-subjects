@@ -15,7 +15,7 @@ func NewSubjectID() SubjectID {
 	return SubjectID{uuid: uuid.New()}
 }
 
-func FromString(id string) (SubjectID, error) {
+func SubjectIDFromString(id string) (SubjectID, error) {
 	uuid, err := uuid.Parse(id)
 
 	if err != nil {
@@ -76,6 +76,10 @@ func NewConcept(name string, description string) (Concept, error) {
 	}, nil
 }
 
+func (c Concept) IsZero() bool {
+	return c.description == "" || c.name == ""
+}
+
 type Subject struct {
 	id          SubjectID
 	title       SubjectTitle
@@ -93,4 +97,24 @@ func NewSubject(id SubjectID, subjectTitle SubjectTitle, subjectDescription Subj
 		description: subjectDescription,
 		concepts:    newConcepts,
 	}
+}
+
+func (s *Subject) ExtractConcepts() error {
+	// TODO: implement text concepts extraction
+	return nil
+}
+
+type ConceptsDiff struct {
+	Updated []Concept
+	Removed []Concept
+	Added   []Concept
+}
+
+func (s *Subject) EvaluateConceptsDiff(next *Subject) (*ConceptsDiff, error) {
+	// TODO: implement diff
+	return nil, nil
+}
+
+func (s *Subject) GetID() SubjectID {
+	return s.id
 }
