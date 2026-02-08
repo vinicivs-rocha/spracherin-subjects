@@ -29,10 +29,18 @@ func (si SubjectID) IsZero() bool {
 	return si.uuid == uuid.Nil
 }
 
+func (si SubjectID) String() string {
+	return si.uuid.String()
+}
+
 type SubjectTitle string
 
 func (st SubjectTitle) IsZero() bool {
 	return st == ""
+}
+
+func (st SubjectTitle) String() string {
+	return string(st)
 }
 
 type SubjectDescription struct {
@@ -54,6 +62,16 @@ func NewSubjectDescription(text string, links map[string]string) (SubjectDescrip
 
 func (sd SubjectDescription) IsZero() bool {
 	return sd.text == ""
+}
+
+func (sd SubjectDescription) Text() string {
+	return sd.text
+}
+
+func (sd SubjectDescription) Links() map[string]string {
+	newLinks := make(map[string]string, len(sd.links))
+	maps.Copy(newLinks, sd.links)
+	return newLinks
 }
 
 type Concept struct {
@@ -78,6 +96,14 @@ func NewConcept(name string, description string) (Concept, error) {
 
 func (c Concept) IsZero() bool {
 	return c.description == "" || c.name == ""
+}
+
+func (c Concept) Name() string {
+	return c.name
+}
+
+func (c Concept) Description() string {
+	return c.description
 }
 
 type Subject struct {
@@ -117,4 +143,18 @@ func (s *Subject) EvaluateConceptsDiff(next *Subject) (*ConceptsDiff, error) {
 
 func (s *Subject) GetID() SubjectID {
 	return s.id
+}
+
+func (s *Subject) GetTitle() SubjectTitle {
+	return s.title
+}
+
+func (s *Subject) GetDescription() SubjectDescription {
+	return s.description
+}
+
+func (s *Subject) GetConcepts() []Concept {
+	newConcepts := make([]Concept, len(s.concepts))
+	copy(newConcepts, s.concepts)
+	return newConcepts
 }
