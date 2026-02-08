@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/vinicivs-rocha/spracherin-subjects/data"
-	"github.com/vinicivs-rocha/spracherin-subjects/domain"
+	"github.com/vinicivs-rocha/spracherin-subjects/internal/data"
+	"github.com/vinicivs-rocha/spracherin-subjects/internal/domain"
 )
 
 type DescribeSubjectCommandDescription struct {

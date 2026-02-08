@@ -3,7 +3,7 @@ package data
 import (
 	"context"
 
-	"github.com/vinicivs-rocha/spracherin-subjects/domain"
+	"github.com/vinicivs-rocha/spracherin-subjects/internal/domain"
 )
 
 type SubjectReader interface {
