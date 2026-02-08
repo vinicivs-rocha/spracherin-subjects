@@ -63,7 +63,7 @@ func createSubject(command DescribeSubjectCommand) (*domain.Subject, error) {
 	return newSubject, nil
 }
 
-func (ds *DescribeSubject) detectChanges(current *domain.Subject, next *domain.Subject) error {
+func (ds *DescribeSubject) detectChanges(ctx context.Context, current *domain.Subject, next *domain.Subject) error {
 	diff, err := current.EvaluateConceptsDiff(next)
 
 	if err != nil {
@@ -71,7 +71,7 @@ func (ds *DescribeSubject) detectChanges(current *domain.Subject, next *domain.S
 	}
 
 	changes := data.NewSubjectChanges(next.GetID(), diff)
-	return ds.messager.MessageDetectedChanges(changes)
+	return ds.messager.MessageDetectedChanges(ctx, changes)
 }
 
 func (ds *DescribeSubject) Execute(ctx context.Context, command DescribeSubjectCommand) (domain.SubjectID, error) {
@@ -117,7 +117,7 @@ func (ds *DescribeSubject) Execute(ctx context.Context, command DescribeSubjectC
 	}
 
 	if current != nil {
-		ds.detectChanges(current, new)
+		ds.detectChanges(ctx, current, new)
 	}
 
 	err = ds.repository.Save(ctx, new)

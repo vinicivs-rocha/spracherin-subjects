@@ -1,6 +1,8 @@
 package data
 
 import (
+	"context"
+
 	"github.com/vinicivs-rocha/spracherin-subjects/internal/domain"
 )
 
@@ -17,5 +19,5 @@ func NewSubjectChanges(subjectID domain.SubjectID, diff *domain.ConceptsDiff) Su
 }
 
 type Messager interface {
-	MessageDetectedChanges(changes SubjectChanges) error
+	MessageDetectedChanges(ctx context.Context, changes SubjectChanges) error
 }
