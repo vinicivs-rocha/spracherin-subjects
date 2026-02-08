@@ -24,45 +24,6 @@ type DescribeSubject struct {
 	messager   data.Messager
 }
 
-func createSubject(command DescribeSubjectCommand) (*domain.Subject, error) {
-	var id domain.SubjectID
-	var err error
-
-	if command.ID == "" {
-		id = domain.NewSubjectID()
-	} else {
-		id, err = domain.SubjectIDFromString(command.ID)
-	}
-
-	if err != nil {
-		return &domain.Subject{}, err
-	}
-
-	title := domain.SubjectTitle(command.Title)
-
-	if title.IsZero() {
-		return &domain.Subject{}, errors.New("title should not be empty")
-	}
-
-	description, err := domain.NewSubjectDescription(command.Description.Text, command.Description.Links)
-
-	if err != nil {
-		return &domain.Subject{}, err
-	}
-
-	concepts := make([]domain.Concept, 0)
-
-	newSubject := domain.NewSubject(id, title, description, concepts)
-
-	err = newSubject.ExtractConcepts()
-
-	if err != nil {
-		return &domain.Subject{}, err
-	}
-
-	return newSubject, nil
-}
-
 func (ds *DescribeSubject) detectChanges(ctx context.Context, current *domain.Subject, next *domain.Subject) error {
 	diff, err := current.EvaluateConceptsDiff(next)
 
