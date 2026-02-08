@@ -29,31 +29,31 @@ func (si SubjectID) IsZero() bool {
 	return si.uuid == uuid.Nil
 }
 
-type Title string
+type SubjectTitle string
 
-func (t Title) IsZero() bool {
-	return t == ""
+func (st SubjectTitle) IsZero() bool {
+	return st == ""
 }
 
-type Description struct {
+type SubjectDescription struct {
 	text  string
 	links map[string]string
 }
 
-func NewDescription(text string, links map[string]string) (Description, error) {
+func NewSubjectDescription(text string, links map[string]string) (SubjectDescription, error) {
 	if text == "" {
-		return Description{}, errors.New("value should not be empty")
+		return SubjectDescription{}, errors.New("value should not be empty")
 	}
 
 	newLinks := make(map[string]string, len(links))
 
 	maps.Copy(newLinks, links)
 
-	return Description{text: text, links: newLinks}, nil
+	return SubjectDescription{text: text, links: newLinks}, nil
 }
 
-func (d Description) IsZero() bool {
-	return d.text == ""
+func (sd SubjectDescription) IsZero() bool {
+	return sd.text == ""
 }
 
 type Concept struct {
@@ -78,19 +78,19 @@ func NewConcept(name string, description string) (Concept, error) {
 
 type Subject struct {
 	id          SubjectID
-	title       Title
-	description Description
+	title       SubjectTitle
+	description SubjectDescription
 	concepts    []Concept
 }
 
-func NewSubject(id SubjectID, title Title, description Description, concepts []Concept) *Subject {
+func NewSubject(id SubjectID, subjectTitle SubjectTitle, subjectDescription SubjectDescription, concepts []Concept) *Subject {
 	newConcepts := make([]Concept, len(concepts))
 	copy(newConcepts, concepts)
 
 	return &Subject{
 		id:          id,
-		title:       title,
-		description: description,
+		title:       subjectTitle,
+		description: subjectDescription,
 		concepts:    newConcepts,
 	}
 }
