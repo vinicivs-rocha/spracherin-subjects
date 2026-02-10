@@ -183,7 +183,7 @@ func (r *MySQLSubjectRepository) Remove(ctx context.Context, subject *domain.Sub
 	}
 
 	if affected == 0 {
-		return errors.New("subject not found")
+		return ErrSubjectNotFound
 	}
 
 	return nil

@@ -7,6 +7,11 @@ import (
 	"github.com/google/uuid"
 )
 
+var (
+	ErrEmptyTitle       = errors.New("title should not be empty")
+	ErrEmptyDescription = errors.New("description should not be empty")
+)
+
 type SubjectID struct {
 	uuid uuid.UUID
 }
@@ -50,7 +55,7 @@ type SubjectDescription struct {
 
 func NewSubjectDescription(text string, links map[string]string) (SubjectDescription, error) {
 	if text == "" {
-		return SubjectDescription{}, errors.New("value should not be empty")
+		return SubjectDescription{}, ErrEmptyDescription
 	}
 
 	newLinks := make(map[string]string, len(links))

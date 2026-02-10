@@ -2,7 +2,6 @@ package application
 
 import (
 	"context"
-	"errors"
 
 	"github.com/vinicivs-rocha/spracherin-subjects/internal/data"
 	"github.com/vinicivs-rocha/spracherin-subjects/internal/domain"
@@ -22,6 +21,13 @@ type DescribeSubjectCommand struct {
 type DescribeSubject struct {
 	repository data.SubjectRepository
 	messager   data.Messager
+}
+
+func NewDescribeSubject(repository data.SubjectRepository, messager data.Messager) *DescribeSubject {
+	return &DescribeSubject{
+		repository: repository,
+		messager:   messager,
+	}
 }
 
 func (ds *DescribeSubject) detectChanges(ctx context.Context, current *domain.Subject, next *domain.Subject) error {
@@ -52,7 +58,7 @@ func (ds *DescribeSubject) Execute(ctx context.Context, command DescribeSubjectC
 	title := domain.SubjectTitle(command.Title)
 
 	if title.IsZero() {
-		return domain.SubjectID{}, errors.New("title should not be empty")
+		return domain.SubjectID{}, domain.ErrEmptyTitle
 	}
 
 	description, err := domain.NewSubjectDescription(command.Description.Text, command.Description.Links)
