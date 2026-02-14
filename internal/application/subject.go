@@ -21,6 +21,7 @@ type DescribeSubjectCommand struct {
 type DescribeSubject struct {
 	repository data.SubjectRepository
 	messager   data.Messager
+	tokenizer  data.Tokenizer
 }
 
 func NewDescribeSubject(repository data.SubjectRepository, messager data.Messager) *DescribeSubject {
@@ -71,7 +72,13 @@ func (ds *DescribeSubject) Execute(ctx context.Context, command DescribeSubjectC
 
 	new := domain.NewSubject(id, title, description, concepts)
 
-	err = new.ExtractConcepts()
+	tokens, err := ds.tokenizer.Encode(new.GetDescription().Text())
+
+	if err != nil {
+		return domain.SubjectID{}, err
+	}
+
+	err = new.ExtractConcepts(tokens)
 
 	if err != nil {
 		return domain.SubjectID{}, err

@@ -80,35 +80,25 @@ func (sd SubjectDescription) Links() map[string]string {
 }
 
 type Concept struct {
-	name        string
-	description string
+	name string
 }
 
-func NewConcept(name string, description string) (Concept, error) {
+func NewConcept(name string) (Concept, error) {
 	if name == "" {
 		return Concept{}, errors.New("name should not be empty")
 	}
 
-	if description == "" {
-		return Concept{}, errors.New("description should not be empty")
-	}
-
 	return Concept{
-		name:        name,
-		description: description,
+		name: name,
 	}, nil
 }
 
 func (c Concept) IsZero() bool {
-	return c.description == "" || c.name == ""
+	return c.name == ""
 }
 
 func (c Concept) Name() string {
 	return c.name
-}
-
-func (c Concept) Description() string {
-	return c.description
 }
 
 type Subject struct {
@@ -130,7 +120,7 @@ func NewSubject(id SubjectID, subjectTitle SubjectTitle, subjectDescription Subj
 	}
 }
 
-func (s *Subject) ExtractConcepts() error {
+func (s *Subject) ExtractConcepts(tokens []byte) error {
 	// TODO: implement text concepts extraction
 	return nil
 }

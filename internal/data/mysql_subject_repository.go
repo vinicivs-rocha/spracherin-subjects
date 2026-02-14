@@ -20,7 +20,6 @@ func NewMySQLSubjectRepository(db *sql.DB) *MySQLSubjectRepository {
 
 type subjectConceptDTO struct {
 	Name        string `json:"name"`
-	Description string `json:"description"`
 }
 
 const (
@@ -141,7 +140,6 @@ func (r *MySQLSubjectRepository) Save(ctx context.Context, subject *domain.Subje
 	for _, concept := range concepts {
 		conceptDTOs = append(conceptDTOs, subjectConceptDTO{
 			Name:        concept.Name(),
-			Description: concept.Description(),
 		})
 	}
 
@@ -227,7 +225,7 @@ func subjectFromValues(
 
 	concepts := make([]domain.Concept, 0, len(conceptDTOs))
 	for _, dto := range conceptDTOs {
-		concept, err := domain.NewConcept(dto.Name, dto.Description)
+		concept, err := domain.NewConcept(dto.Name)
 		if err != nil {
 			return nil, err
 		}
