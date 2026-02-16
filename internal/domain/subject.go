@@ -101,14 +101,22 @@ func (c Concept) Name() string {
 	return c.name
 }
 
+type BytePair struct {
+	First  byte
+	Second byte
+}
+
+type Vocabulary map[BytePair]byte
+
 type Subject struct {
 	id          SubjectID
 	title       SubjectTitle
 	description SubjectDescription
 	concepts    []Concept
+	vocabulary  Vocabulary
 }
 
-func NewSubject(id SubjectID, subjectTitle SubjectTitle, subjectDescription SubjectDescription, concepts []Concept) *Subject {
+func NewSubject(id SubjectID, subjectTitle SubjectTitle, subjectDescription SubjectDescription, concepts []Concept, vocabulary Vocabulary) *Subject {
 	newConcepts := make([]Concept, len(concepts))
 	copy(newConcepts, concepts)
 
@@ -117,10 +125,11 @@ func NewSubject(id SubjectID, subjectTitle SubjectTitle, subjectDescription Subj
 		title:       subjectTitle,
 		description: subjectDescription,
 		concepts:    newConcepts,
+		vocabulary:  vocabulary,
 	}
 }
 
-func (s *Subject) ExtractConcepts(tokens []byte) error {
+func (s *Subject) ExtractConcepts() error {
 	// TODO: implement text concepts extraction
 	return nil
 }

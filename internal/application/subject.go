@@ -70,15 +70,15 @@ func (ds *DescribeSubject) Execute(ctx context.Context, command DescribeSubjectC
 
 	concepts := make([]domain.Concept, 0)
 
-	new := domain.NewSubject(id, title, description, concepts)
+	vocabulary, err := ds.tokenizer.GetVocabulary()
 
-	tokens, err := ds.tokenizer.Encode(new.GetDescription().Text())
+	new := domain.NewSubject(id, title, description, concepts, vocabulary)
 
 	if err != nil {
 		return domain.SubjectID{}, err
 	}
 
-	err = new.ExtractConcepts(tokens)
+	err = new.ExtractConcepts()
 
 	if err != nil {
 		return domain.SubjectID{}, err

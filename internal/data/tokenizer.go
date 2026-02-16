@@ -1,6 +1,7 @@
 package data
 
+import "github.com/vinicivs-rocha/spracherin-subjects/internal/domain"
+
 type Tokenizer interface {
-	Decode(data []byte) (string, error)
-	Encode(data string) ([]byte, error)
+	GetVocabulary() (domain.Vocabulary, error)
 }
